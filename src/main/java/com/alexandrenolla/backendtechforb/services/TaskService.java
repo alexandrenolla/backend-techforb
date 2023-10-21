@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import com.alexandrenolla.backendtechforb.models.Task;
 import com.alexandrenolla.backendtechforb.models.User;
 import com.alexandrenolla.backendtechforb.repositories.TaskRepository;
+import com.alexandrenolla.backendtechforb.services.exceptions.DataBindingViolationException;
+import com.alexandrenolla.backendtechforb.services.exceptions.ObjectNotFoundException;
 
 import jakarta.transaction.Transactional;
 
@@ -23,7 +25,7 @@ public class TaskService {
 
     public Task findById(Long id) {
         Optional<Task> task = this.taskRepository.findById(id);
-        return task.orElseThrow(() -> new RuntimeException(
+        return task.orElseThrow(() -> new ObjectNotFoundException(
             "Task not found! Id: " + id + ", Type: " + Task.class.getName()));
         
     }
@@ -56,7 +58,7 @@ public class TaskService {
         try {
             this.taskRepository.deleteById(id);
         } catch (Exception e) {
-            throw new RuntimeException("There are entities related!");
+            throw new DataBindingViolationException("There are entities related!");
         }
     }
 }
