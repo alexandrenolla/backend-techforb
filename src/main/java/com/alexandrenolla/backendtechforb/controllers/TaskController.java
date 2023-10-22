@@ -83,4 +83,31 @@ public class TaskController {
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping("/deposit")
+    public ResponseEntity<Void> deposit(@Valid @RequestBody Task depositTask) {
+        Task createdTask = this.taskService.deposit(depositTask);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+            .path("/{id}").buildAndExpand(createdTask.getId()).toUri();
+
+        return ResponseEntity.created(location).build();
+    }
+
+    @PostMapping("/transfer/{recipientUserId}")
+    public ResponseEntity<Void> transfer(
+            @Valid @RequestBody Task transferTask,
+            @PathVariable Long recipientUserId) {
+        this.taskService.transfer(transferTask, recipientUserId);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/withdraw")
+    public ResponseEntity<Void> withdraw(@Valid @RequestBody Task withdrawTask) {
+        Task createdTask = this.taskService.withdraw(withdrawTask);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+            .path("/{id}").buildAndExpand(createdTask.getId()).toUri();
+            
+        return ResponseEntity.created(location).build();
+    }
+
 }

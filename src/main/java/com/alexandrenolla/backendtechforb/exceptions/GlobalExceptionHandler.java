@@ -15,6 +15,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.alexandrenolla.backendtechforb.services.exceptions.DataBindingViolationException;
+import com.alexandrenolla.backendtechforb.services.exceptions.InsufficientBalanceException;
 import com.alexandrenolla.backendtechforb.services.exceptions.ObjectNotFoundException;
 
 import jakarta.validation.ConstraintViolationException;
@@ -28,7 +29,11 @@ import lombok.extern.slf4j.Slf4j;
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Value("$(server.error.include-exception)")
-    private boolean printStackTrace;
+    private String printStackTrace;
+
+    // public void setprintStackTrace(String printStackTrace) {
+    //     this.printStackTrace = printStackTrace;
+    //   }
 
     @Override
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
@@ -112,11 +117,20 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             HttpStatus httpStatus,
             WebRequest request) {
             ErrorResponse errorResponse = new ErrorResponse(httpStatus.value(), message);
-            if (this.printStackTrace) {
+            if (this.printStackTrace != null) {
                 errorResponse.setStackTrace(ExceptionUtils.getStackTrace(exception));
             }
 
             return ResponseEntity.status(httpStatus).body(errorResponse);
 
     }
+
+    @ExceptionHandler(InsufficientBalanceException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<Object> handleInsufficientBalanceException(InsufficientBalanceException exception, WebRequest request) {
+        String errorMessage = exception.getMessage();
+        log.error("Insufficient balance error: " + errorMessage, exception);
+        return buildErrorResponse(exception, errorMessage, HttpStatus.BAD_REQUEST, request);
+    }
+
 }

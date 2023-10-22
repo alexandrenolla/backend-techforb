@@ -1,5 +1,6 @@
 package com.alexandrenolla.backendtechforb.models;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -55,6 +57,11 @@ public class User {
     @NotEmpty(groups = { CreateUser.class, UpdateUser.class })
     @Size(groups = { CreateUser.class, UpdateUser.class }, min = 8, max = 60)
     private String password;
+
+    @Column(name = "balance", length = 255, nullable = false)
+    @NotNull(groups = { CreateUser.class, UpdateUser.class })
+    @DecimalMin(groups = {CreateUser.class, UpdateUser.class}, value = "0.1")
+    private BigDecimal balance;
 
     @OneToMany(mappedBy = "user")
     @JsonProperty(access = Access.WRITE_ONLY)
