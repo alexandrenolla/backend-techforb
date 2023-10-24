@@ -40,6 +40,6 @@ mvn clean install
 
 mvn spring-boot:run
 
-5. O servidor Spring Boot será iniciado e as APIs estarão acessíveis em http://localhost:8080.
+5. O servidor Spring Boot será iniciado e a API estará acessivel em http://localhost:8080.
 
 Certifique-se de que o servidor MySQL esteja em execução e configurado corretamente antes de usar o aplicativo Angular. O front-end Angular está configurado para se comunicar com o back-end por meio de URLs específicas.
