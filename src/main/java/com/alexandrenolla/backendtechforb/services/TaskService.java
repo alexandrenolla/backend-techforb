@@ -80,9 +80,9 @@ public class TaskService {
     }
 
     @Transactional
-    public Task transfer(Task transferTask, Long recipientUserId) {
+    public Task transfer(Task transferTask) {
         User sender = userService.findById(transferTask.getUser().getId());
-        User recipient = userService.findById(recipientUserId);
+        // User recipient = userService.findById(recipientUserId);
 
         BigDecimal transferAmount = transferTask.getValue();
         if (sender.getBalance().compareTo(transferAmount) < 0) {
@@ -91,7 +91,7 @@ public class TaskService {
 
         sender.setBalance(sender.getBalance().subtract(transferAmount));
         
-        recipient.setBalance(recipient.getBalance().add(transferAmount));
+        //recipient.setBalance(recipient.getBalance().add(transferAmount));
 
         
         transferTask.setDescription(TransactionType.TRANSFER.name());
@@ -101,12 +101,12 @@ public class TaskService {
         taskRepository.save(transferTask);
 
         
-        Task recipientTask = new Task();
-        recipientTask.setDescription(TransactionType.TRANSFER.name());
-        recipientTask.setValue(transferAmount);
-        recipientTask.setUser(recipient);
-        recipientTask.setId(null);
-        taskRepository.save(recipientTask);
+        // Task recipientTask = new Task();
+        // recipientTask.setDescription(TransactionType.TRANSFER.name());
+        // recipientTask.setValue(transferAmount);
+        // recipientTask.setUser(recipient);
+        // recipientTask.setId(null);
+        // taskRepository.save(recipientTask);
 
         return transferTask;
     }

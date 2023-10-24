@@ -1,5 +1,6 @@
 package com.alexandrenolla.backendtechforb.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,10 @@ public class UserService {
         return user.orElseThrow(() -> new ObjectNotFoundException(
             "User not found! Id:" + id + ", Type: " + User.class.getName()
         ));
+    }
+
+    public List<User> findAllUsers() {
+        return userRepository.findAll();
     }
 
     @Transactional

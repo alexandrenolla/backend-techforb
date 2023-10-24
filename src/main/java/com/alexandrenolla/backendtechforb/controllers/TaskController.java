@@ -30,7 +30,7 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
-     @Autowired
+    @Autowired
     private UserService userService;
 
 
@@ -92,11 +92,10 @@ public class TaskController {
         return ResponseEntity.created(location).build();
     }
 
-    @PostMapping("/transfer/{recipientUserId}")
+    @PostMapping("/transfer")
     public ResponseEntity<Void> transfer(
-            @Valid @RequestBody Task transferTask,
-            @PathVariable Long recipientUserId) {
-        this.taskService.transfer(transferTask, recipientUserId);
+            @Valid @RequestBody Task transferTask) {
+        this.taskService.transfer(transferTask);
 
         return ResponseEntity.noContent().build();
     }

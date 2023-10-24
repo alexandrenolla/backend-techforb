@@ -51,7 +51,6 @@ public class User {
     @Size(groups = CreateUser.class, min = 2, max = 100)
     private String username;
 
-    @JsonProperty(access = Access.WRITE_ONLY)
     @Column(name = "password", length = 60, nullable = false)
     @NotNull(groups = { CreateUser.class, UpdateUser.class })
     @NotEmpty(groups = { CreateUser.class, UpdateUser.class })
@@ -60,11 +59,15 @@ public class User {
 
     @Column(name = "balance", length = 255, nullable = false)
     @NotNull(groups = { CreateUser.class, UpdateUser.class })
-    @DecimalMin(groups = {CreateUser.class, UpdateUser.class}, value = "0.1")
+    @DecimalMin(groups = UpdateUser.class, value = "0.1")
     private BigDecimal balance;
 
     @OneToMany(mappedBy = "user")
     @JsonProperty(access = Access.WRITE_ONLY)
     private List<Task> tasks = new ArrayList<Task>();
+
+    @OneToMany(mappedBy = "user")
+    @JsonProperty(access = Access.WRITE_ONLY)
+    private List<Card> cards = new ArrayList<Card>();
 
 }

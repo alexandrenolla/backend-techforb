@@ -1,6 +1,7 @@
 package com.alexandrenolla.backendtechforb.controllers;
 
 import java.net.URI;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +38,13 @@ public class UserController {
 
         return ResponseEntity.ok().body(obj);
     }
+
+    @GetMapping
+    public ResponseEntity<List<User>> findAllUsers() {
+    List<User> users = userService.findAllUsers();
+    return ResponseEntity.ok().body(users);
+}
+
 
     @PostMapping
     @Validated(CreateUser.class)
